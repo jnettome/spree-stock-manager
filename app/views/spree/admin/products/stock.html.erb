@@ -3,12 +3,14 @@
 <div id="new_product" data-hook></div>
 <table class="index" id="listing_products">
   <tr data-hook="admin_products_index_headers">
+    <th><%= t(:taxonomy) %></th>
     <th><%= t(:sku) %></th>
     <th><%= t(:name) %></th>
     <th><%= t(:in_stock) %></th>	
   </tr>
 <% @products.each do |product| %>
   <tr <%= "style='color: red;'" unless product.has_stock? %> id="<%= dom_id product %>" data-hook="admin_products_index_rows" <%= "class='has_variants'" unless product.variants.empty? %>>
+    <td><%= sanitize(sanitize(breadcrumbs(product.taxons.first), :tags => []).sub("Início&nbsp;&raquo;&nbsp;Produtos&nbsp;&raquo;&nbsp;", "")) %></td>
     <td><%= product.sku rescue '' %></td>
     <td><%= link_to product.try(:name), edit_admin_product_path(product) %></td>
     <td><%= product.on_hand %></td>	
@@ -16,6 +18,7 @@
   <% if !product.variants.empty? %>
   <% product.variants.each do |variant| %>
   <tr class="admin_products_index_rows variant">
+    <td></td>
     <td></td>
     <td><%= variant.try(:name) %> - <%= variant.friendly_variants %></td>
     <td><%= variant.on_hand %></td>
