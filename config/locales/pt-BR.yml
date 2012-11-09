@@ -1,4 +1,5 @@
 'pt-BR':
+  stock_index_title: 'Selecione uma Categoria'
   listing_products: 'Listando Estoque'
   in_stock: 'Em Estoque'
   stock: 'Estoque'

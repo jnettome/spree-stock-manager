@@ -1,29 +1,16 @@
 <%= render :partial => 'spree/admin/shared/product_sub_menu' %>
-<h1><%= t(:listing_products) %></h1>
-<div id="new_product" data-hook></div>
-<table class="index" id="listing_products">
-  <tr data-hook="admin_products_index_headers">
-    <th><%= t(:taxonomy) %></th>
-    <th><%= t(:sku) %></th>
-    <th><%= t(:name) %></th>
-    <th><%= t(:in_stock) %></th>	
-  </tr>
-<% @products.each do |product| %>
-  <tr <%= "style='color: red;'" unless product.has_stock? %> id="<%= dom_id product %>" data-hook="admin_products_index_rows" <%= "class='has_variants'" unless product.variants.empty? %>>
-    <td><%= sanitize(sanitize(breadcrumbs(product.taxons.first), :tags => []).sub("Início&nbsp;&raquo;&nbsp;Produtos&nbsp;&raquo;&nbsp;", "")) %></td>
-    <td><%= product.sku rescue '' %></td>
-    <td><%= link_to product.try(:name), edit_admin_product_path(product) %></td>
-    <td><%= product.on_hand %></td>	
-  </tr>
-  <% if !product.variants.empty? %>
-  <% product.variants.each do |variant| %>
-  <tr class="admin_products_index_rows variant">
-    <td></td>
-    <td></td>
-    <td><%= variant.try(:name) %> - <%= variant.friendly_variants %></td>
-    <td><%= variant.on_hand %></td>
-  </tr>
+
+<h1><%= t(:stock_index_title) %></h1>
+
+<ol>
+  <% @taxons.each do |taxon| %>
+  <li>
+    <%= taxon.name %>
+    <ul>
+      <% taxon.children.each do |sub| %>
+        <li><%= link_to sub.name, stock_show_admin_products_path(sub) %></li>
+      <% end %>
+    </ul>
+  </li>
   <% end %>
-  <% end %>
-<% end %>
-</table>
+</ol>
